@@ -1,0 +1,69 @@
+<?xml version="1.0" ?>
+
+<project name="audiomaster" default="build" basedir=".">
+
+  <!-- Build everything -->
+  <target name="build" depends="make-src,build-java,build-jar"/>
+
+  <!-- Clean everything -->
+  <target name="clean" depends="clean-src,clean-java"/>
+
+  <!-- Dist Clean everyting -->
+  <target name="distclean" depends="clean">
+    <delete dir="build"/>
+    <delete file="AM9000.jar"/>
+    <delete dir="depcache"/>
+  </target>
+
+  <target name="clean-src">
+    <exec executable="make" dir="${basedir}">
+      <arg line="-C ../src/ clean" />
+    </exec>
+  </target>
+
+  <target name="make-src">
+    <exec executable="make" dir="${basedir}">
+      <arg line="-C ../src/" />
+    </exec>
+  </target>
+
+  <!-- Build Jar -->
+  <target name="build-jar">
+    <jar destfile="AM9000.jar" compress="false">
+
+      <fileset dir="build">
+	<include name="**/*.class" />
+	<include name="*.class" />
+      </fileset>
+
+      <manifest>
+	<attribute name="Main-Class" value="audiomaster.AudioMaster" />
+      </manifest>
+    </jar>
+    <copy file="AM9000.jar" todir="." />
+  </target>
+
+  <target name="build-java">
+    <javac
+       srcdir="src"
+       includes="**/*.java"
+       debug="on"
+       optimize="off"
+       destdir="build"
+       compiler="extJavac"
+       deprecation="yes"
+       source="1.5"
+       target="1.5"
+       >
+    </javac>
+  </target>
+
+  <target name="clean-java" >
+    <delete>
+      <fileset dir="build" includes="**/*.class"/>
+      <fileset dir="." includes="**/*~" defaultexcludes="no"/>
+      <fileset dir="." includes="AM9000.jar"/>
+    </delete>
+  </target>
+
+</project>

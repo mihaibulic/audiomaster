@@ -1,4 +1,4 @@
-package code;
+package audiomaster;
 
 public class Tone
 {
